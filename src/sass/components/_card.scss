@@ -1,0 +1,15 @@
+.card-custom {
+  background: white;
+  border-radius: 10px;
+  padding: $space-md;
+  box-shadow: $shadow-soft;
+  margin-bottom: $space-md;
+
+  h3 {
+    margin-bottom: $space-sm;
+  }
+
+  p {
+    color: $secondary;
+  }
+}

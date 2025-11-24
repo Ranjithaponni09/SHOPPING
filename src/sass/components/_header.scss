@@ -1,0 +1,11 @@
+.header {
+  background: $primary;
+  padding: $space-md;
+  color: white;
+  @include flex-center;
+
+  .title {
+    font-size: 22px;
+    font-weight: bold;
+  }
+}

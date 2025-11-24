@@ -1,0 +1,21 @@
+.sidebar {
+  background: $dark;
+  width: 240px;
+  height: 100vh;
+  padding: $space-md;
+  color: white;
+  box-shadow: $shadow-soft;
+
+  ul {
+    list-style: none;
+
+    li {
+      padding: $space-sm 0;
+      cursor: pointer;
+
+      &:hover {
+        color: $warning;
+      }
+    }
+  }
+}

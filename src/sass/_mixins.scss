@@ -1,0 +1,20 @@
+// Centering mixin
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Text overflow
+@mixin text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Responsive
+@mixin md {
+  @media (max-width: 768px) {
+    @content;
+  }
+}

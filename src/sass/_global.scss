@@ -1,0 +1,14 @@
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: $dark;
+}
+
+p {
+  color: #555;
+}
+
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: $space-md;
+}
