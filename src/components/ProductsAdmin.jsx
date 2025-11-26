@@ -1,62 +1,111 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api/axios';
-import { CCard, CCardBody, CFormInput, CButton, CListGroup, CListGroupItem } from '@coreui/react';
-import NavBar from './NavBar';
+import React, { useEffect, useState } from "react";
+import {
+  CRow,
+  CCol,
+  CCard,
+  CCardHeader,
+  CCardBody,
+  CButton,
+  CSpinner,
+} from "@coreui/react";
 
-export default function ProductsAdmin(){
-  const [title,setTitle] = useState('');
-  const [price,setPrice] = useState('');
-  const [list, setList] = useState([]);
+import api from "../api/axios";
+import ProductModal from "./ProductModal";
+import AdminProductTile from "./AdminProductTile";
 
-  const fetchList = async () => {
+export default function ProductsAdmin() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [editData, setEditData] = useState(null);
+
+  const fetchProducts = async () => {
     try {
-      const res = await api.get('/api/products');
-      setList(res.data);
-    } catch(e) {
-      console.error(e);
-      alert('Failed to load products');
+      setLoading(true);
+      const res = await api.get("/api/products");
+      setProducts(res.data);
+    } catch (err) {
+      console.error("Fetch Error:", err);
+      alert("Failed to fetch products");
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(()=>{ fetchList(); }, []);
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
-  const save = async (e) => {
-    e.preventDefault();
+  const handleDelete = async (id) => {
+    if (!window.confirm("Delete this product?")) return;
+
     try {
-      await api.post('/api/products', { title, price: Number(price) });
-      setTitle(''); setPrice('');
-      fetchList();
-    } catch(e) {
-      alert('Create failed: ' + (e.response?.data?.msg || e.message));
+      await api.delete(`/api/products/${id}`);
+      fetchProducts();
+    } catch (err) {
+      console.error("Delete Error:", err);
+      alert("Delete failed");
     }
   };
 
   return (
-    <div>
-      <CCard className="mb-3">
-        <NavBar/>
-        <CCardBody>
-          <h3>Products Admin</h3>
-          <form onSubmit={save} className="d-flex gap-2">
-            <CFormInput placeholder="Title" value={title} onChange={e=>setTitle(e.target.value)} />
-            <CFormInput placeholder="Price" value={price} onChange={e=>setPrice(e.target.value)} />
-            <CButton type="submit">Create</CButton>
-          </form>
-        </CCardBody>
-      </CCard>
+    <>
+      <CRow>
+        <CCol>
+          <CCard>
+            <CCardHeader className="d-flex justify-content-between align-items-center">
+              <h4 className="m-0">Products Admin</h4>
 
-      <CCard>
-        <CCardBody>
-          <h5>All products</h5>
-          <CListGroup>
-            {list.map(p => (
-              <CListGroupItem key={p._id}>
-                {p.title} — ₹{p.price}
-              </CListGroupItem>
-            ))}
-          </CListGroup>
-        </CCardBody>
-      </CCard>
-    </div>
+              <CButton
+                color="primary"
+                className="text-white fw-bold"
+                onClick={() => {
+                  setEditData(null);
+                  setModalOpen(true);
+                }}
+              >
+                + Add Product
+              </CButton>
+            </CCardHeader>
+
+            <CCardBody>
+              {loading ? (
+                <div className="text-center">
+                  <CSpinner color="primary" />
+                </div>
+              ) : (
+                <CRow>
+                  {products.length === 0 ? (
+                    <h6>No products found</h6>
+                  ) : (
+                    products.map((p) => (
+                      <CCol md={4} key={p._id}>
+                        <AdminProductTile
+                          product={p}
+                          onEdit={() => {
+                            setEditData(p);
+                            setModalOpen(true);
+                          }}
+                          onDelete={() => handleDelete(p._id)}
+                        />
+                      </CCol>
+                    ))
+                  )}
+                </CRow>
+              )}
+            </CCardBody>
+          </CCard>
+        </CCol>
+      </CRow>
+
+      {/* PRODUCT MODAL */}
+      <ProductModal
+        visible={modalOpen}
+        setVisible={setModalOpen}
+        editData={editData}
+        refresh={fetchProducts}
+      />
+    </>
   );
 }

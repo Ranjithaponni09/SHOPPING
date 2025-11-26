@@ -7,6 +7,8 @@ import ProductsAdmin from './components/ProductsAdmin';
 import NavBar from './components/NavBar';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
+import UserProductList from './components/UserProductList';
+
 
 export default function App(){
   return (
@@ -19,6 +21,7 @@ export default function App(){
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
           <Route path="/admin/products" element={<AdminRoute><ProductsAdmin /></AdminRoute>} />
+          <Route path="/products" element={<UserProductList />} />
           <Route path="*" element={<div style={{padding:20}}>Not Found</div>} />
         </Routes>
       </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import { CCard, CCardBody, CRow, CCol } from '@coreui/react';
 import { useSelector } from 'react-redux';
 import NavBar from './NavBar';
+import UserProductList from './UserProductList';
 
 export default function AdminDashboard(){
   const user = useSelector(s => s.auth.user);
@@ -11,12 +12,13 @@ export default function AdminDashboard(){
       <CCard className="mb-3">
         <CCardBody>
           <h1 className="mb-0">Welcome, {user ? user.name : 'Admin'}!</h1>
-          <p className="text-muted">This is your admin dashboard — built with CoreUI.</p>
+          <p className="text-muted"></p>
         </CCardBody>
       </CCard>
 
       <CRow>
-        <CCol sm={6}>
+        <UserProductList/>
+        {/* <CCol sm={6}>
           <CCard className="mb-3">
             <CCardBody>
               <h4>Quick Stats</h4>
@@ -31,7 +33,7 @@ export default function AdminDashboard(){
               <p className="mb-0">Show admin notifications, logs or quick links.</p>
             </CCardBody>
           </CCard>
-        </CCol>
+        </CCol> */}
       </CRow>
     </div>
   );

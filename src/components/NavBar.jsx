@@ -24,6 +24,11 @@ export default function NavBar() {
   return (
     <CHeader position="sticky" className="mb-3">
       <CContainer fluid className="topnav">
+      <div className="nav-item" onClick={() => navigate('/products')}>
+  Products
+</div>
+
+
         <div className="brand" onClick={() => navigate('/')}>
           SHOPPING
         </div>
@@ -38,6 +43,8 @@ export default function NavBar() {
               <div className="nav-item" onClick={() => navigate('/admin/products')}>
                 Products
               </div>
+    
+              
 
               <span className="user">Hi, {user ? user.name : 'Admin'}</span>
 
